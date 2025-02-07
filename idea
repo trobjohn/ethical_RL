@@ -1,0 +1,109 @@
+
+The treatment effect function is
+
+y_it = m(x_it, d_it, Ly_it, z_t) + eps_it
+
+- Lx_it lag operator on endogenous state
+- Ly_it lag operator on sequence of y's
+- z_t is the exogenous state
+- d_it is the decision at time t
+- eps_it is iid noise
+
+A decision is a mapping 
+
+d: (Lx_it, Ly_it, z_t) \rightarrow A
+
+that takes the observable state into the (finite?) action space.
+
+
+
+beta[ y_it | (Lx_it, Ly_it, z_t, d_t) ]   --- beliefs about the return function
+
+
+
+
+=========
+
+Non-Parametric and Ethical Reinforcement Learning
+
+1. Structural MDP's aren't non-parametrically identified: Parametric models are required to solve for policy functions
+2. Q-learning and multi-armed bandit methodologies require experimentation on the subjects (or purify a mixed strategy into a deterministic one?): This is ethically questionable
+3. Can you locally learn using "RDD"/"DCC-test" and ethically implement online reinforcement learning?
+
+
+There is a status quo policy function, d(x_it,z_t) \rightarrow A.
+
+Observation of the outcome function y_it = m(x_it, d^0(x_it,z_t), z_t) + eps_it yields noisy measurements of the flow payoff (profit, treatment status, educational testing outcomes).
+
+Consider
+
+\hat{V}(x,z) = \sum_{t =1 }^S \dfrac{1}{S} y_it \mathbb{I}\{ x = x_it \}
+
+This is a non-parametric estimate of the policy function itself for d^0(x_it, z_t)
+
+
+RESULT 0:
+Thm [Milgrom-Segal Envelope Theorem] : The optimal policy function is absolutely continuous in the state variable, for any structure on the choice set.
+
+So if there are perceived discontinuities in \hat{V}(x,z), we can attribute them to local failures of optimization: Despite (x,z) being very close to (x',z'), the discounted expected values are far apart. This means that d^0, by contrapositive, is not optimal.
+
+We typically think that d^0 is not bad, per se, but that it is 
+
+
+RESULT 1:
+If the VC shattering of d^* has full intersectional support with d^0, then d^t \rightarrow d^* in probability.
+If the VC shattering of d^* does not have full intersectional support with d^0, then d^t \rightarrow d', where d' is the solution is to a constrained problem where the choice set is limited to d^0
+
+
+In many situations, we have information about the ordering of states and interventions. For example, Drug A might be a more intensive treatment than Drug B, but A has more severe side effects, so that the A intervention is only justified over B when the disease has progressed further, so that A > B for x' and B>A for x when x'>x. 
+
+This corresponds to quasi-supermodularity. And if 
+
+RESULT 2:
+A lattice is...
+If the underlying recursive decision program is supermodular, then the solution d^* is isotone in (x,z).
+If the underlying RDP is supermodular, isotonic local experimentation leads to the optimal d^*
+
+
+
+A local experimentation strategy looks for discontinuities along the boundaries in the decision rule of \hat{V}(x,z), and then adjusts d^t(x,z) locally to reduce the discontinuity. 
+
+
+If the decision space is...
+    - Discrete, unordered: Has no structure, hard to optimize
+    - Discrete, ordered: Supermodular problem
+    - Convex, Compact: Do some sort of Newton's method
+
+
+The discrete unordered case is obviously the hardest because it's unclear whether pockets or
+
+
+
+
+
+If d^*(x,z) is upper hemi-continuous at (x,z) and multi-valued...
+d^*(x,z) is uhc, not lhc, so more or less anything can be in the limit fcn, unlike lhc.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+If (x,z) and (x',z') are close but V_d(x,z) and V_d(x',z') are far apart, then the nbhd of (x,z) has indeterminate optimality.
+
+How to say, "The place to experiment with novel treatments is at the existing decision boundaries."
+
+We can't discover "pockets" of unordered optimal treatment this way. We need a theory of optimal treatment with uncertainty about where the boundaries are. But LRL converges to a constrained maximum, where you remove d^0-non-adjacent members of the choice set from A(x,z) in the optimal problem.
+
+
+
+
